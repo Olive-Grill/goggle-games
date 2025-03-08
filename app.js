@@ -1,25 +1,21 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const startButton = document.getElementById('startButton');
     const startPacmanButton = document.getElementById('startPacman');
-    const gameArea = document.getElementById('gameArea');
     const pacmanGameArea = document.getElementById('pacmanGameArea');
-    const restartButton = document.getElementById('restartGame');
     const restartPacmanButton = document.getElementById('restartPacmanGame');
 
-    // Pac-Man Game
+    // Pac-Man Game Setup
     const pacmanCanvas = document.getElementById('pacmanCanvas');
     const ctx = pacmanCanvas.getContext('2d');
-    const mazeWidth = 20;  // 20 columns
-    const mazeHeight = 20; // 20 rows
-    const wallSize = 15; // Wall size is 15px
+    const wallSize = 15; // Wall size 15px
+    const mazeWidth = 20;
+    const mazeHeight = 20;
 
-    // Set canvas width and height based on maze size
     pacmanCanvas.width = mazeWidth * wallSize;
     pacmanCanvas.height = mazeHeight * wallSize;
 
-    let pacman = { x: 200, y: 200, radius: 10, speed: 5 }; // Adjusted radius for Pac-Man
+    let pacman = { x: 200, y: 200, radius: 10, speed: 3 }; // Pac-Man size (radius)
     let pacmanVelocity = { x: 0, y: 0 };
-    let pacmanDirection = 0;
+    let pacmanDirection = 0; // Starting direction
 
     const maze = [
         [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
@@ -38,22 +34,13 @@ document.addEventListener('DOMContentLoaded', function () {
         [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
     ];
 
-    startPacmanButton.addEventListener('click', function () {
-        startPacmanGame();
-    });
-
-    restartPacmanButton.addEventListener('click', function () {
-        startPacmanGame();
-    });
+    startPacmanButton.addEventListener('click', startPacmanGame);
+    restartPacmanButton.addEventListener('click', startPacmanGame);
 
     function startPacmanGame() {
         pacmanGameArea.style.display = 'block';
-        gameArea.style.display = 'none';
         startPacmanButton.style.display = 'none';
         restartPacmanButton.style.display = 'block';
-        pacman = { x: 200, y: 200, radius: 10, speed: 5 }; // Reset Pac-Man size
-        pacmanVelocity = { x: 0, y: 0 };
-        pacmanDirection = 0;
         drawMaze();
         drawPacman();
         document.addEventListener('keydown', movePacman);
@@ -62,8 +49,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function drawMaze() {
         ctx.clearRect(0, 0, pacmanCanvas.width, pacmanCanvas.height);  // Clear canvas
-
-        // Draw the maze with smaller walls
         for (let row = 0; row < mazeHeight; row++) {
             for (let col = 0; col < mazeWidth; col++) {
                 if (maze[row][col] === 1) {
@@ -75,7 +60,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function drawPacman() {
-        // Draw Pac-Man (with a smaller radius)
         ctx.beginPath();
         ctx.arc(pacman.x, pacman.y, pacman.radius, pacmanDirection * Math.PI / 180, (pacmanDirection + 270) * Math.PI / 180);
         ctx.lineTo(pacman.x, pacman.y);
@@ -125,6 +109,7 @@ document.addEventListener('DOMContentLoaded', function () {
             pacman.y = newY;
         }
 
+        drawMaze();
         drawPacman();
         setTimeout(gameLoop, 1000 / 60); // 60 FPS
     }
