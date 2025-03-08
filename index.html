@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Goggle Games</title>
+    <title>Goggle Games - Pac-Man</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -20,10 +20,8 @@
             align-items: center;
             height: 80vh;
         }
-        iframe {
-            border: none;
-            width: 640px;
-            height: 480px;
+        canvas {
+            background-color: black;
             border-radius: 10px;
             box-shadow: 0px 0px 15px rgba(255, 255, 255, 0.2);
         }
@@ -32,11 +30,13 @@
 <body>
 
     <h1>Welcome to Goggle Games</h1>
-    <p>Play classic games directly on your browser!</p>
+    <p>Play Pac-Man below!</p>
 
     <div class="game-container">
-        <iframe src="https://www.free80sarcade.com/pacman.php"></iframe>
+        <canvas id="pacmanCanvas" width="600" height="600"></canvas>
     </div>
+
+    <script src="pacman.js"></script>
 
 </body>
 </html>
