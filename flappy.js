@@ -59,4 +59,46 @@ function draw() {
     ctx.fill();
 
     // Update bird position
-    birdY +
+    birdY += velocity;
+    velocity += gravity;
+
+    // Draw pipes
+    for (let i = 0; i < pipes.length; i++) {
+        let pipe = pipes[i];
+        ctx.fillStyle = "#228B22"; // Green color
+        ctx.fillRect(pipe.x, 0, 50, pipe.y); // Top pipe
+        ctx.fillRect(pipe.x, pipe.y + 150, 50, canvas.height - pipe.y - 150); // Bottom pipe
+
+        pipe.x -= 2; // Move pipes to the left
+
+        // Collision detection
+        if (
+            birdX + birdRadius > pipe.x && birdX - birdRadius < pipe.x + 50 &&
+            (birdY - birdRadius < pipe.y || birdY + birdRadius > pipe.y + 150)
+        ) {
+            gameOver = true;
+        }
+
+        // Score update
+        if (pipe.x === birdX) {
+            score++;
+        }
+    }
+
+    // Add new pipes when the current pipes are off-screen
+    if (pipes[pipes.length - 1].x < canvas.width - 200) {
+        pipes.push({ x: canvas.width, y: Math.floor(Math.random() * 200) + 50 });
+    }
+
+    // Remove pipes that are off-screen
+    if (pipes[0].x < -50) {
+        pipes.shift();
+    }
+
+    // Draw score
+    ctx.fillStyle = "white";
+    ctx.font = "20px Arial";
+    ctx.fillText("Score: " + score, 20, 30);
+
+    requestAnimationFrame(draw);
+}
