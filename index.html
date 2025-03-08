@@ -20,6 +20,7 @@
             background-color: #70c5ce;
             border: 2px solid #fff;
             border-radius: 10px;
+            display: none; /* Hidden until game starts */
         }
         h1 {
             position: absolute;
@@ -56,7 +57,7 @@
             left: 50%;
             transform: translateX(-50%);
             text-align: center;
-            display: none;
+            display: none; /* Hidden until game is over */
         }
         #gameOverMenu button {
             padding: 15px 30px;
@@ -77,7 +78,7 @@
         <p>Click the button below to start the game!</p>
         <button id="startButton">Start Game</button>
     </div>
-    <canvas id="flappyCanvas" width="400" height="500" style="display: none;"></canvas>
+    <canvas id="flappyCanvas" width="400" height="500"></canvas>
     <div id="gameOverMenu">
         <h1>Game Over</h1>
         <p>Score: <span id="finalScore"></span></p>
