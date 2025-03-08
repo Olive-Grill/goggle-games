@@ -9,11 +9,15 @@ document.addEventListener('DOMContentLoaded', function () {
     // Pac-Man Game
     const pacmanCanvas = document.getElementById('pacmanCanvas');
     const ctx = pacmanCanvas.getContext('2d');
-    const mazeWidth = 20; // Increased the width for better space in the canvas
-    const mazeHeight = 20; // Increased the height for better space in the canvas
-    const wallSize = 15; // Smaller walls
+    const mazeWidth = 20;  // 20 columns
+    const mazeHeight = 20; // 20 rows
+    const wallSize = 15; // Wall size is 15px
 
-    let pacman = { x: 200, y: 200, radius: 10, speed: 5 }; // Adjusted radius
+    // Set canvas width and height based on maze size
+    pacmanCanvas.width = mazeWidth * wallSize;
+    pacmanCanvas.height = mazeHeight * wallSize;
+
+    let pacman = { x: 200, y: 200, radius: 10, speed: 5 }; // Adjusted radius for Pac-Man
     let pacmanVelocity = { x: 0, y: 0 };
     let pacmanDirection = 0;
 
@@ -57,6 +61,8 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function drawMaze() {
+        ctx.clearRect(0, 0, pacmanCanvas.width, pacmanCanvas.height);  // Clear canvas
+
         // Draw the maze with smaller walls
         for (let row = 0; row < mazeHeight; row++) {
             for (let col = 0; col < mazeWidth; col++) {
@@ -69,9 +75,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function drawPacman() {
-        ctx.clearRect(0, 0, pacmanCanvas.width, pacmanCanvas.height);  // Clear the canvas
-        drawMaze();
-
         // Draw Pac-Man (with a smaller radius)
         ctx.beginPath();
         ctx.arc(pacman.x, pacman.y, pacman.radius, pacmanDirection * Math.PI / 180, (pacmanDirection + 270) * Math.PI / 180);
