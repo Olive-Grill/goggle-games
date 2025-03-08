@@ -1,11 +1,38 @@
-/* Canvas Game Styling */
-#pacmanCanvas {
-    border: 2px solid #ddd;
-    background-color: black;
-    display: block;
-    margin: 0 auto;
+/* General body styling */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+    text-align: center;
+    margin: 0;
+    padding: 0;
 }
 
+/* Header styling */
+h1 {
+    color: #4CAF50;
+    margin-top: 50px;
+    font-size: 2.5em;
+}
+
+/* Game area styling */
+.game-area {
+    margin-top: 40px;
+    padding: 20px;
+    background-color: #fff;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    display: inline-block;
+    width: 400px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    color: #4CAF50;
+}
+
+/* Button styling */
 button {
     background-color: #4CAF50;
     color: white;
@@ -14,8 +41,32 @@ button {
     font-size: 1.2em;
     cursor: pointer;
     margin-top: 20px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
 }
 
 button:hover {
     background-color: #45a049;
 }
+
+/* Input box styling */
+input {
+    padding: 10px;
+    font-size: 1.2em;
+    width: 200px;
+    margin-top: 10px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+}
+
+/* Pac-Man Game Canvas */
+#pacmanCanvas {
+    border: 2px solid #ddd;
+    background-color: #000;
+    margin-top: 20px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Mess
