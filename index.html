@@ -3,23 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flappy Bird Game</title>
-    <script src="https://cdn.jsdelivr.net/npm/appwrite@2.0.0/dist/appwrite.min.js"></script> <!-- Appwrite SDK -->
-    <link rel="stylesheet" href="style.css">
+    <title>Flappy Bird Game with Account</title>
+    <style>
+        body {
+            background-color: #111;
+            font-family: Arial, sans-serif;
+            color: white;
+            text-align: center;
+        }
+        #gameScreen {
+            display: none;
+        }
+        #gameCanvas {
+            background-color: #000;
+            display: block;
+            margin: 0 auto;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        #scoreDisplay {
+            font-size: 24px;
+        }
+    </style>
 </head>
 <body>
-    <div id="startMenu">
-        <h1>Flappy Bird Game</h1>
+    <div id="authScreen">
         <button id="registerButton">Register</button>
         <button id="loginButton">Login</button>
-        <button id="startButton" style="display:none;">Start Game</button>
-        <button id="restartButton" style="display:none;">Restart Game</button>
-        <div id="scoreDisplay">Score: 0</div>
+    </div>
+    
+    <div id="gameScreen">
+        <button id="startButton">Start Game</button>
+        <button id="restartButton">Restart Game</button>
+        <canvas id="gameCanvas" width="500" height="600"></canvas>
+        <p id="scoreDisplay">Score: 0</p>
     </div>
 
-    <!-- Game Canvas will be here -->
-    <canvas id="gameCanvas" width="400" height="600" style="display:none;"></canvas>
-
+    <script src="https://cdn.jsdelivr.net/npm/appwrite@0.7.0"></script>
     <script src="app.js"></script>
 </body>
 </html>
