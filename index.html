@@ -9,12 +9,13 @@
             background-color: #333;
             margin: 0;
             padding: 0;
+            font-family: Arial, sans-serif;
             text-align: center;
         }
         canvas {
             background-color: #70c5ce;
             display: block;
-            margin: 20px auto;
+            margin: 0 auto;
         }
         #startMenu, #gameOverMenu {
             display: none;
@@ -23,14 +24,19 @@
             left: 50%;
             transform: translate(-50%, -50%);
             color: white;
+            font-size: 24px;
+        }
+        #startMenu h1, #gameOverMenu h1 {
+            font-size: 36px;
         }
         #startMenu button, #gameOverMenu button {
             font-size: 20px;
             padding: 10px 20px;
-            margin: 20px;
+            margin-top: 20px;
             background-color: #FFEB3B;
             border: none;
             cursor: pointer;
+            border-radius: 5px;
         }
         #pointsDisplay {
             position: absolute;
