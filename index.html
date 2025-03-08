@@ -7,7 +7,7 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #70c5ce;
+            background-color: #70c5ce; /* Default background color */
             margin: 0;
             display: flex;
             justify-content: center;
@@ -16,6 +16,14 @@
             overflow: hidden;
             flex-direction: column;
             text-align: center;
+        }
+
+        .game-container {
+            position: relative;
+            background-color: black; /* Black background for the game area */
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
         }
 
         h1 {
@@ -89,7 +97,9 @@
         <button id="startButton">Start Game</button>
         <button id="shopButton">Shop</button> <!-- Shop button added here -->
     </div>
-    <canvas id="flappyCanvas" width="400" height="500"></canvas>
+    <div class="game-container">
+        <canvas id="flappyCanvas" width="400" height="500"></canvas>
+    </div>
     <div id="gameOverMenu">
         <h1>Game Over</h1>
         <p>Score: <span id="finalScore"></span></p>
