@@ -2,13 +2,15 @@
 const client = new Appwrite.Client();
 const account = new Appwrite.Account(client);
 
-client.setEndpoint('https://cloud.appwrite.io/v1')  // Use your Appwrite endpoint
-      .setProject('67cc7f6c00377c4ea5d4'); // Use your Appwrite project ID
+client.setEndpoint('https://cloud.appwrite.io/v1')  // Your Appwrite endpoint
+      .setProject('67cc7f6c00377c4ea5d4'); // Your Appwrite project ID
 
-const gameCanvas = document.getElementById('gameCanvas');
 const startButton = document.getElementById('startButton');
 const restartButton = document.getElementById('restartButton');
 const scoreDisplay = document.getElementById('scoreDisplay');
+const gameCanvas = document.getElementById('gameCanvas');
+const authScreen = document.getElementById('authScreen');
+const gameScreen = document.getElementById('gameScreen');
 let score = 0;
 
 // Function to register a user
@@ -26,25 +28,44 @@ async function loginUser(email, password) {
     try {
         await account.createSession(email, password);
         alert('Login successful!');
-        startButton.style.display = 'block'; // Show start game button
+        showGameScreen();
     } catch (error) {
         alert('Error: ' + error.message);
     }
 }
 
+// Function to check if the user is logged in
+async function checkSession() {
+    try {
+        const session = await account.getSession('current');
+        console.log('User is logged in:', session);
+        showGameScreen();
+    } catch (error) {
+        console.log('User is not logged in:', error);
+    }
+}
+
+// Function to show game screen
+function showGameScreen() {
+    authScreen.style.display = 'none';
+    gameScreen.style.display = 'block';
+    startButton.style.display = 'block';
+    restartButton.style.display = 'none';
+    scoreDisplay.style.display = 'block';
+}
+
 // Function to start the game
 function startGame() {
     startButton.style.display = 'none';
-    gameCanvas.style.display = 'block';
     restartButton.style.display = 'block';
-    startNewGame(); // Replace with actual game initialization
+    startNewGame();
 }
 
 // Function to restart the game
 function restartGame() {
     score = 0;
     scoreDisplay.textContent = 'Score: 0';
-    startGame(); // Restart the game
+    startGame();
 }
 
 // Event listeners for buttons
@@ -63,6 +84,22 @@ document.getElementById('loginButton').addEventListener('click', () => {
 document.getElementById('startButton').addEventListener('click', startGame);
 document.getElementById('restartButton').addEventListener('click', restartGame);
 
+// Replace this with actual game code for starting a new game
+function startNewGame() {
+    console.log('Game Started');
+    // For example, initialize the canvas and game objects here
+    // For now, we simulate increasing score
+    let gameInterval = setInterval(() => {
+        score += 1;
+        scoreDisplay.textContent = 'Score: ' + score;
+        if (score === 10) { // Example end condition
+            clearInterval(gameInterval);
+            alert("Game Over!");
+            saveScore();
+        }
+    }, 1000);
+}
+
 // Function to save the score to the Appwrite database
 async function saveScore() {
     try {
@@ -71,8 +108,8 @@ async function saveScore() {
 
         const database = new Appwrite.Databases(client);
         await database.createDocument(
-            '67cc80c7001dc875eca5', // Database ID (your database ID)
-            '67cc80d000300a719aee', // Collection ID (your collection ID)
+            '67cc80c7001dc875eca5', // Your database ID
+            '67cc80d000300a719aee', // Your collection ID
             'unique()', // Document ID (auto-generated)
             { user_id: userId, score: score }
         );
@@ -82,39 +119,5 @@ async function saveScore() {
     }
 }
 
-// Function to get the score from the Appwrite database
-async function getScore() {
-    try {
-        const user = await account.get();
-        const userId = user.$id;
-
-        const database = new Appwrite.Databases(client);
-        const result = await database.listDocuments(
-            '67cc80c7001dc875eca5', // Database ID
-            '67cc80d000300a719aee', // Collection ID
-            [Appwrite.Query.equal('user_id', userId)] // Search by user_id
-        );
-
-        const userScore = result.documents.length > 0 ? result.documents[0].score : 0;
-        return userScore;
-    } catch (error) {
-        alert('Error: ' + error.message);
-    }
-}
-
-// Function to display the score on the game screen
-async function displayScore() {
-    const score = await getScore();
-    scoreDisplay.textContent = 'Score: ' + score;
-}
-
-// Replace `startNewGame()` with actual game initialization logic.
-function startNewGame() {
-    // Start your Flappy Bird game logic here
-    console.log('Game Started');
-    // For example:
-    // 1. Initialize the canvas
-    // 2. Set up the bird and pipes
-    // 3. Add the game loop
-    // 4. Call saveScore() when the game ends
-}
+// Call checkSession on page load to check if the user is logged in
+checkSession();
