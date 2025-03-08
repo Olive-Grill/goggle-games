@@ -65,6 +65,9 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function movePacman(event) {
+        // Prevent the default behavior of the arrow keys (scrolling)
+        event.preventDefault();
+
         if (event.key === 'ArrowUp') {
             pacmanVelocity.y = -pacman.speed;
             pacmanVelocity.x = 0;
