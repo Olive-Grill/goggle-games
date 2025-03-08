@@ -38,6 +38,7 @@ function resetGame() {
     score = 0;
     pipes = [{ x: canvas.width, y: Math.floor(Math.random() * 200) + 50 }];
     gameOver = false;
+    updateScoreDisplay(); // Update score display
 }
 
 // Restart game after game over
@@ -92,6 +93,7 @@ function draw() {
         // Score update: when the bird successfully passes a pipe
         if (pipe.x === birdX) {
             score++;
+            updateScoreDisplay(); // Update score display
         }
     }
 
@@ -105,10 +107,10 @@ function draw() {
         pipes.shift();
     }
 
-    // Draw score
-    ctx.fillStyle = "white";
-    ctx.font = "20px Arial";
-    ctx.fillText("Score: " + score, 20, 30);
-
     requestAnimationFrame(draw);
+}
+
+// Update the score display on the screen
+function updateScoreDisplay() {
+    document.getElementById("scoreDisplay").textContent = "Score: " + score;
 }
