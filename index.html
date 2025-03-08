@@ -32,12 +32,33 @@
             color: white;
             font-size: 18px;
         }
+        #startMenu {
+            position: absolute;
+            top: 40%;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+        }
+        #startMenu button {
+            padding: 15px 30px;
+            font-size: 20px;
+            background-color: #FFEB3B;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #startMenu button:hover {
+            background-color: #FFCA28;
+        }
     </style>
 </head>
 <body>
-    <h1>Flappy Bird</h1>
-    <p>Click or press SPACE to make the bird fly!</p>
-    <canvas id="flappyCanvas" width="400" height="500"></canvas>
+    <div id="startMenu">
+        <h1>Flappy Bird</h1>
+        <p>Click the button below to start the game!</p>
+        <button id="startButton">Start Game</button>
+    </div>
+    <canvas id="flappyCanvas" width="400" height="500" style="display: none;"></canvas>
 
     <script src="flappy.js"></script>
 </body>
