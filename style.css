@@ -36,6 +36,14 @@ button:hover {
     background-color: #45a049;
 }
 
+/* Input box styling */
+input {
+    padding: 10px;
+    font-size: 1.2em;
+    width: 200px;
+    margin-top: 10px;
+}
+
 /* Game area styling */
 .game-area {
     margin-top: 40px;
@@ -44,8 +52,4 @@ button:hover {
     border: 2px solid #ddd;
     border-radius: 8px;
     display: inline-block;
-}
-
-.game-area p {
-    font-size: 1.5em;
 }
