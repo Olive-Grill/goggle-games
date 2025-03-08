@@ -3,7 +3,7 @@ const ctx = canvas.getContext("2d");
 
 let birdX = 50, birdY = 200, birdRadius = 15;
 let gravity = 0.6, velocity = 0, jumpStrength = -10;
-let points = 0, gameOver = false;
+let score = 0, gameOver = false;
 let pipes = [{ x: canvas.width, y: Math.floor(Math.random() * 200) + 50 }];
 let isGameStarted = false;
 
@@ -35,10 +35,10 @@ function startGame() {
 function resetGame() {
     birdY = 200;
     velocity = 0;
-    points = 0;
+    score = 0;
     pipes = [{ x: canvas.width, y: Math.floor(Math.random() * 200) + 50 }];
     gameOver = false;
-    updatePointsDisplay(); // Update points display
+    updateScoreDisplay(); // Update score display
 }
 
 // Restart game after game over
@@ -53,7 +53,7 @@ function restartGame() {
 // Draw the game state
 function draw() {
     if (gameOver) {
-        document.getElementById("finalPoints").textContent = points;
+        document.getElementById("finalScore").textContent = score;
         document.getElementById("gameOverMenu").style.display = "block";
         canvas.style.display = "none"; // Hide canvas when game is over
         return;
@@ -90,10 +90,10 @@ function draw() {
             gameOver = true;
         }
 
-        // Points update: when the bird successfully passes a pipe
+        // Score update: when the bird successfully passes a pipe
         if (pipe.x === birdX) {
-            points++;
-            updatePointsDisplay(); // Update points display
+            score++;
+            updateScoreDisplay(); // Update score display
         }
     }
 
@@ -110,7 +110,7 @@ function draw() {
     requestAnimationFrame(draw);
 }
 
-// Update the points display on the screen
-function updatePointsDisplay() {
-    document.getElementById("pointsDisplay").textContent = "Points: " + points;
+// Update the score display on the screen
+function updateScoreDisplay() {
+    document.getElementById("scoreDisplay").textContent = "Score: " + score;
 }
