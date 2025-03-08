@@ -5,6 +5,7 @@ let birdX = 50, birdY = 200, birdRadius = 15;
 let gravity = 0.6, velocity = 0, jumpStrength = -10;
 let score = 0, gameOver = false;
 let pipes = [{ x: canvas.width, y: Math.floor(Math.random() * 200) + 50 }];
+let isGameStarted = false;
 
 // Handle jumping
 document.addEventListener("keydown", jump);
@@ -12,8 +13,19 @@ document.addEventListener("click", jump);
 
 function jump(event) {
     if (event.code === "Space" || event.type === "click") {
+        if (!isGameStarted) return; // Only jump if the game has started
         velocity = jumpStrength;
     }
+}
+
+// Start the game
+document.getElementById("startButton").addEventListener("click", startGame);
+
+function startGame() {
+    isGameStarted = true;
+    document.getElementById("startMenu").style.display = "none"; // Hide start menu
+    canvas.style.display = "block"; // Show canvas
+    draw(); // Start drawing the game
 }
 
 // Draw the game state
@@ -81,6 +93,3 @@ function draw() {
 
     requestAnimationFrame(draw);
 }
-
-// Start the game
-draw();
