@@ -16,21 +16,26 @@ let score = 0;
 // Function to register a user
 async function registerUser(email, password) {
     try {
-        await account.create('unique()', email, password);
+        const response = await account.create('unique()', email, password);
+        console.log('User registered:', response);
         alert('User registered successfully!');
+        loginUser(email, password); // Auto-login after registration
     } catch (error) {
-        alert('Error: ' + error.message);
+        console.error('Error registering user:', error);
+        alert('Registration error: ' + error.message);
     }
 }
 
 // Function to login a user
 async function loginUser(email, password) {
     try {
-        await account.createSession(email, password);
+        const response = await account.createSession(email, password);
+        console.log('User logged in:', response);
         alert('Login successful!');
         showGameScreen();
     } catch (error) {
-        alert('Error: ' + error.message);
+        console.error('Error logging in:', error);
+        alert('Login error: ' + error.message);
     }
 }
 
@@ -42,6 +47,7 @@ async function checkSession() {
         showGameScreen();
     } catch (error) {
         console.log('User is not logged in:', error);
+        alert('Please log in to continue.');
     }
 }
 
