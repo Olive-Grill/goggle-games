@@ -47,13 +47,35 @@ button {
     cursor: pointer;
     border-radius: 5px;
     border: none;
+    background-color: #4CAF50; /* Green */
+    color: white;
+    transition: background-color 0.3s ease;
 }
 
 button:hover {
-    background-color: #555;
-    color: white;
+    background-color: #45a049; /* Darker green */
 }
 
 button:active {
-    background-color: #333;
+    background-color: #388e3c; /* Even darker green */
+}
+
+/* Restart button styling */
+#restartPacmanGame {
+    display: none;
+}
+
+/* Pac-Man Game Area Styling */
+#pacmanGameArea {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    height: 80vh;
+}
+
+/* Adding some space between the canvas and buttons */
+#pacmanGameArea button {
+    margin-top: 20px;
 }
