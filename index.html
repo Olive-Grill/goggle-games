@@ -3,109 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flappy Bird - Goggle Games</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: black;
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            overflow: hidden;
-            flex-direction: column;
-            text-align: center;
-        }
-
-        h1 {
-            color: white;
-            font-size: 30px;
-            margin: 0;
-        }
-
-        canvas {
-            background-color: #70c5ce;
-            border: 2px solid #fff;
-            border-radius: 10px;
-            display: none;
-            margin-top: 20px;
-        }
-
-        p {
-            color: white;
-            font-size: 18px;
-            margin-top: 20px;
-        }
-
-        #startMenu {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            text-align: center;
-        }
-
-        #startMenu button {
-            padding: 15px 30px;
-            font-size: 20px;
-            background-color: #FFEB3B;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-top: 20px;
-        }
-
-        #startMenu button:hover {
-            background-color: #FFCA28;
-        }
-
-        #gameOverMenu {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            text-align: center;
-            display: none;
-        }
-
-        #gameOverMenu button {
-            padding: 15px 30px;
-            font-size: 20px;
-            background-color: #FFEB3B;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-top: 20px;
-        }
-
-        #gameOverMenu button:hover {
-            background-color: #FFCA28;
-        }
-
-        #scoreDisplay {
-            color: white;
-            font-size: 24px;
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            z-index: 10;
-        }
-    </style>
+    <title>Flappy Bird Game</title>
+    <script src="https://cdn.jsdelivr.net/npm/appwrite@2.0.0/dist/appwrite.min.js"></script> <!-- Appwrite SDK -->
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="scoreDisplay">Score: 0</div> <!-- Always visible score display -->
     <div id="startMenu">
-        <h1>Flappy Bird</h1>
-        <p>Click the button below to start the game!</p>
-        <button id="startButton">Start Game</button>
-        <button id="shopButton">Shop</button>
-    </div>
-    <canvas id="flappyCanvas" width="400" height="500"></canvas>
-    <div id="gameOverMenu">
-        <h1>Game Over</h1>
-        <p>Score: <span id="finalScore"></span></p>
-        <button id="restartButton">Restart Game</button>
+        <h1>Flappy Bird Game</h1>
+        <button id="registerButton">Register</button>
+        <button id="loginButton">Login</button>
+        <button id="startButton" style="display:none;">Start Game</button>
+        <button id="restartButton" style="display:none;">Restart Game</button>
+        <div id="scoreDisplay">Score: 0</div>
     </div>
 
-    <script src="flappy.js"></script>
+    <!-- Game Canvas will be here -->
+    <canvas id="gameCanvas" width="400" height="600" style="display:none;"></canvas>
+
+    <script src="app.js"></script>
 </body>
 </html>
