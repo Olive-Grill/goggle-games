@@ -1,116 +1,120 @@
-document.addEventListener('DOMContentLoaded', function () {
-    const startPacmanButton = document.getElementById('startPacman');
-    const pacmanGameArea = document.getElementById('pacmanGameArea');
-    const restartPacmanButton = document.getElementById('restartPacmanGame');
+// Initialize Appwrite
+const client = new Appwrite.Client();
+const account = new Appwrite.Account(client);
 
-    // Pac-Man Game Setup
-    const pacmanCanvas = document.getElementById('pacmanCanvas');
-    const ctx = pacmanCanvas.getContext('2d');
-    const wallSize = 15; // Wall size 15px
-    const mazeWidth = 20;
-    const mazeHeight = 20;
+client.setEndpoint('https://cloud.appwrite.io/v1')  // Use your Appwrite endpoint
+      .setProject('67cc7f6c00377c4ea5d4'); // Use your Appwrite project ID
 
-    pacmanCanvas.width = mazeWidth * wallSize;
-    pacmanCanvas.height = mazeHeight * wallSize;
+const gameCanvas = document.getElementById('gameCanvas');
+const startButton = document.getElementById('startButton');
+const restartButton = document.getElementById('restartButton');
+const scoreDisplay = document.getElementById('scoreDisplay');
+let score = 0;
 
-    let pacman = { x: 200, y: 200, radius: 10, speed: 3 }; // Pac-Man size (radius)
-    let pacmanVelocity = { x: 0, y: 0 };
-    let pacmanDirection = 0; // Starting direction
-
-    const maze = [
-        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-        [1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 1, 0, 0, 0, 1],
-        [1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1],
-        [1, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 0, 1],
-        [1, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 0, 1],
-        [1, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1],
-        [1, 1, 1, 0, 1, 0, 1, 0, 1, 1, 0, 0, 1, 0, 1, 1, 0, 0, 0, 1],
-        [1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1],
-        [1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 0, 0, 1],
-        [1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 1, 0, 0, 0, 1, 1, 1, 0, 1, 1],
-        [1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 1, 1, 1, 0, 1, 0, 1, 1, 0, 1],
-        [1, 0, 0, 0, 1, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1],
-        [1, 1, 1, 0, 1, 0, 1, 0, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1],
-        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    ];
-
-    startPacmanButton.addEventListener('click', startPacmanGame);
-    restartPacmanButton.addEventListener('click', startPacmanGame);
-
-    function startPacmanGame() {
-        pacmanGameArea.style.display = 'block';
-        startPacmanButton.style.display = 'none';
-        restartPacmanButton.style.display = 'block';
-        drawMaze();
-        drawPacman();
-        document.addEventListener('keydown', movePacman);
-        gameLoop();
+// Function to register a user
+async function registerUser(email, password) {
+    try {
+        await account.create('unique()', email, password);
+        alert('User registered successfully!');
+    } catch (error) {
+        alert('Error: ' + error.message);
     }
+}
 
-    function drawMaze() {
-        ctx.clearRect(0, 0, pacmanCanvas.width, pacmanCanvas.height);  // Clear canvas
-        for (let row = 0; row < mazeHeight; row++) {
-            for (let col = 0; col < mazeWidth; col++) {
-                if (maze[row][col] === 1) {
-                    ctx.fillStyle = 'blue'; // Wall color
-                    ctx.fillRect(col * wallSize, row * wallSize, wallSize, wallSize);
-                }
-            }
-        }
+// Function to login a user
+async function loginUser(email, password) {
+    try {
+        await account.createSession(email, password);
+        alert('Login successful!');
+        startButton.style.display = 'block'; // Show start game button
+    } catch (error) {
+        alert('Error: ' + error.message);
     }
+}
 
-    function drawPacman() {
-        ctx.beginPath();
-        ctx.arc(pacman.x, pacman.y, pacman.radius, pacmanDirection * Math.PI / 180, (pacmanDirection + 270) * Math.PI / 180);
-        ctx.lineTo(pacman.x, pacman.y);
-        ctx.fillStyle = 'yellow';
-        ctx.fill();
-    }
+// Function to start the game
+function startGame() {
+    startButton.style.display = 'none';
+    gameCanvas.style.display = 'block';
+    restartButton.style.display = 'block';
+    startNewGame(); // Replace with actual game initialization
+}
 
-    function movePacman(event) {
-        event.preventDefault();
+// Function to restart the game
+function restartGame() {
+    score = 0;
+    scoreDisplay.textContent = 'Score: 0';
+    startGame(); // Restart the game
+}
 
-        if (event.key === 'ArrowUp') {
-            pacmanVelocity.y = -pacman.speed;
-            pacmanVelocity.x = 0;
-            pacmanDirection = 270;
-        } else if (event.key === 'ArrowDown') {
-            pacmanVelocity.y = pacman.speed;
-            pacmanVelocity.x = 0;
-            pacmanDirection = 90;
-        } else if (event.key === 'ArrowLeft') {
-            pacmanVelocity.x = -pacman.speed;
-            pacmanVelocity.y = 0;
-            pacmanDirection = 180;
-        } else if (event.key === 'ArrowRight') {
-            pacmanVelocity.x = pacman.speed;
-            pacmanVelocity.y = 0;
-            pacmanDirection = 0;
-        }
-    }
-
-    function checkCollision(x, y) {
-        // Check for collisions with walls
-        let col = Math.floor(x / wallSize);
-        let row = Math.floor(y / wallSize);
-
-        if (maze[row] && maze[row][col] === 1) {
-            return true; // Wall collision detected
-        }
-        return false; // No collision
-    }
-
-    function gameLoop() {
-        let newX = pacman.x + pacmanVelocity.x;
-        let newY = pacman.y + pacmanVelocity.y;
-
-        if (!checkCollision(newX, newY)) {
-            pacman.x = newX;
-            pacman.y = newY;
-        }
-
-        drawMaze();
-        drawPacman();
-        setTimeout(gameLoop, 1000 / 60); // 60 FPS
-    }
+// Event listeners for buttons
+document.getElementById('registerButton').addEventListener('click', () => {
+    const email = prompt('Enter your email');
+    const password = prompt('Enter your password');
+    registerUser(email, password);
 });
+
+document.getElementById('loginButton').addEventListener('click', () => {
+    const email = prompt('Enter your email');
+    const password = prompt('Enter your password');
+    loginUser(email, password);
+});
+
+document.getElementById('startButton').addEventListener('click', startGame);
+document.getElementById('restartButton').addEventListener('click', restartGame);
+
+// Function to save the score to the Appwrite database
+async function saveScore() {
+    try {
+        const user = await account.get();
+        const userId = user.$id;
+
+        const database = new Appwrite.Databases(client);
+        await database.createDocument(
+            '[YOUR_DATABASE_ID]', // Database ID
+            '[YOUR_COLLECTION_ID]', // Collection ID
+            'unique()', // Document ID (auto-generated)
+            { user_id: userId, score: score }
+        );
+        alert('Score saved!');
+    } catch (error) {
+        alert('Error: ' + error.message);
+    }
+}
+
+// Function to get the score from the Appwrite database
+async function getScore() {
+    try {
+        const user = await account.get();
+        const userId = user.$id;
+
+        const database = new Appwrite.Databases(client);
+        const result = await database.listDocuments(
+            '[YOUR_DATABASE_ID]', // Database ID
+            '[YOUR_COLLECTION_ID]', // Collection ID
+            [Appwrite.Query.equal('user_id', userId)] // Search by user_id
+        );
+
+        const userScore = result.documents.length > 0 ? result.documents[0].score : 0;
+        return userScore;
+    } catch (error) {
+        alert('Error: ' + error.message);
+    }
+}
+
+// Function to display the score on the game screen
+async function displayScore() {
+    const score = await getScore();
+    scoreDisplay.textContent = 'Score: ' + score;
+}
+
+// Replace `startNewGame()` with actual game initialization logic.
+function startNewGame() {
+    // Start your Flappy Bird game logic here
+    console.log('Game Started');
+    // For example:
+    // 1. Initialize the canvas
+    // 2. Set up the bird and pipes
+    // 3. Add the game loop
+    // 4. Call saveScore() when the game ends
+}
