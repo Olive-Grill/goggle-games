@@ -9,29 +9,29 @@ document.addEventListener('DOMContentLoaded', function () {
     // Pac-Man Game
     const pacmanCanvas = document.getElementById('pacmanCanvas');
     const ctx = pacmanCanvas.getContext('2d');
-    const mazeWidth = 15;
-    const mazeHeight = 15;
-    const wallSize = 30;
+    const mazeWidth = 20; // Increased the width for better space in the canvas
+    const mazeHeight = 20; // Increased the height for better space in the canvas
+    const wallSize = 15; // Smaller walls
 
-    let pacman = { x: 200, y: 200, radius: 20, speed: 5 };
+    let pacman = { x: 200, y: 200, radius: 10, speed: 5 }; // Adjusted radius
     let pacmanVelocity = { x: 0, y: 0 };
     let pacmanDirection = 0;
 
     const maze = [
-        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-        [1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1],
-        [1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 0, 1],
-        [1, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 1],
-        [1, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1],
-        [1, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1],
-        [1, 1, 1, 0, 1, 0, 1, 0, 1, 1, 0, 0, 1, 0, 1],
-        [1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 0, 1],
-        [1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1],
-        [1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 1, 0, 0, 0, 1],
-        [1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 1, 1, 1, 0, 1],
-        [1, 0, 0, 0, 1, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1],
-        [1, 1, 1, 0, 1, 0, 1, 0, 0, 1, 1, 1, 1, 0, 1],
-        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+        [1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 1, 0, 0, 0, 1],
+        [1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1],
+        [1, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 0, 1],
+        [1, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 0, 1],
+        [1, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1],
+        [1, 1, 1, 0, 1, 0, 1, 0, 1, 1, 0, 0, 1, 0, 1, 1, 0, 0, 0, 1],
+        [1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1],
+        [1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 0, 0, 1],
+        [1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 1, 0, 0, 0, 1, 1, 1, 0, 1, 1],
+        [1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 1, 1, 1, 0, 1, 0, 1, 1, 0, 1],
+        [1, 0, 0, 0, 1, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1],
+        [1, 1, 1, 0, 1, 0, 1, 0, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1],
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
     ];
 
     startPacmanButton.addEventListener('click', function () {
@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', function () {
         gameArea.style.display = 'none';
         startPacmanButton.style.display = 'none';
         restartPacmanButton.style.display = 'block';
-        pacman = { x: 200, y: 200, radius: 20, speed: 5 };
+        pacman = { x: 200, y: 200, radius: 10, speed: 5 }; // Reset Pac-Man size
         pacmanVelocity = { x: 0, y: 0 };
         pacmanDirection = 0;
         drawMaze();
@@ -57,11 +57,11 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function drawMaze() {
-        // Draw the maze on the canvas
+        // Draw the maze with smaller walls
         for (let row = 0; row < mazeHeight; row++) {
             for (let col = 0; col < mazeWidth; col++) {
                 if (maze[row][col] === 1) {
-                    ctx.fillStyle = 'blue'; // Color for walls
+                    ctx.fillStyle = 'blue'; // Wall color
                     ctx.fillRect(col * wallSize, row * wallSize, wallSize, wallSize);
                 }
             }
@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', function () {
         ctx.clearRect(0, 0, pacmanCanvas.width, pacmanCanvas.height);  // Clear the canvas
         drawMaze();
 
-        // Pac-Man's shape
+        // Draw Pac-Man (with a smaller radius)
         ctx.beginPath();
         ctx.arc(pacman.x, pacman.y, pacman.radius, pacmanDirection * Math.PI / 180, (pacmanDirection + 270) * Math.PI / 180);
         ctx.lineTo(pacman.x, pacman.y);
