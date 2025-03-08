@@ -3,109 +3,178 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flappy Bird - Goggle Games</title>
+    <title>Flappy Bird</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: black;
+            background-color: #333;
             margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            overflow: hidden;
-            flex-direction: column;
+            padding: 0;
             text-align: center;
         }
-
-        h1 {
-            color: white;
-            font-size: 30px;
-            margin: 0;
-        }
-
         canvas {
             background-color: #70c5ce;
-            border: 2px solid #fff;
-            border-radius: 10px;
+            display: block;
+            margin: 20px auto;
+        }
+        #startMenu, #gameOverMenu {
             display: none;
-            margin-top: 20px;
-        }
-
-        p {
-            color: white;
-            font-size: 18px;
-            margin-top: 20px;
-        }
-
-        #startMenu {
             position: absolute;
             top: 50%;
-            transform: translateY(-50%);
-            text-align: center;
-        }
-
-        #startMenu button {
-            padding: 15px 30px;
-            font-size: 20px;
-            background-color: #FFEB3B;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-top: 20px;
-        }
-
-        #startMenu button:hover {
-            background-color: #FFCA28;
-        }
-
-        #gameOverMenu {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            text-align: center;
-            display: none;
-        }
-
-        #gameOverMenu button {
-            padding: 15px 30px;
-            font-size: 20px;
-            background-color: #FFEB3B;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-top: 20px;
-        }
-
-        #gameOverMenu button:hover {
-            background-color: #FFCA28;
-        }
-
-        #scoreDisplay {
+            left: 50%;
+            transform: translate(-50%, -50%);
             color: white;
-            font-size: 24px;
+        }
+        #startMenu button, #gameOverMenu button {
+            font-size: 20px;
+            padding: 10px 20px;
+            margin: 20px;
+            background-color: #FFEB3B;
+            border: none;
+            cursor: pointer;
+        }
+        #pointsDisplay {
             position: absolute;
             top: 20px;
             left: 20px;
-            z-index: 10;
+            font-size: 24px;
+            color: white;
         }
     </style>
 </head>
 <body>
-    <div id="scoreDisplay">Score: 0</div> <!-- Always visible score display -->
-    <div id="startMenu">
-        <h1>Flappy Bird</h1>
-        <p>Click the button below to start the game!</p>
-        <button id="startButton">Start Game</button>
-        <button id="shopButton">Shop</button>
-    </div>
-    <canvas id="flappyCanvas" width="400" height="500"></canvas>
-    <div id="gameOverMenu">
-        <h1>Game Over</h1>
-        <p>Score: <span id="finalScore"></span></p>
-        <button id="restartButton">Restart Game</button>
-    </div>
 
-    <script src="flappy.js"></script>
+<div id="startMenu">
+    <h1>Flappy Bird</h1>
+    <button id="startButton">Start Game</button>
+</div>
+
+<div id="gameOverMenu">
+    <h1>Game Over</h1>
+    <p>Your final points: <span id="finalPoints">0</span></p>
+    <button id="restartButton">Restart</button>
+</div>
+
+<canvas id="flappyCanvas" width="400" height="600"></canvas>
+<div id="pointsDisplay">Points: 0</div>
+
+<script>
+    const canvas = document.getElementById("flappyCanvas");
+    const ctx = canvas.getContext("2d");
+
+    let birdX = 50, birdY = 200, birdRadius = 15;
+    let gravity = 0.6, velocity = 0, jumpStrength = -10;
+    let points = 0, gameOver = false;
+    let pipes = [{ x: canvas.width, y: Math.floor(Math.random() * 200) + 50 }];
+    let isGameStarted = false;
+
+    // Handle jumping
+    document.addEventListener("keydown", jump);
+    document.addEventListener("click", jump);
+
+    function jump(event) {
+        if (event.code === "Space" || event.type === "click") {
+            if (!isGameStarted) return; // Only jump if the game has started
+            velocity = jumpStrength;
+        }
+    }
+
+    // Start the game
+    document.getElementById("startButton").addEventListener("click", startGame);
+    document.getElementById("restartButton").addEventListener("click", restartGame);
+
+    function startGame() {
+        isGameStarted = true;
+        document.getElementById("startMenu").style.display = "none"; // Hide start menu
+        document.getElementById("gameOverMenu").style.display = "none"; // Hide game over menu
+        canvas.style.display = "block"; // Show canvas
+        resetGame(); // Reset the game state
+        draw(); // Start drawing the game
+    }
+
+    // Reset game state
+    function resetGame() {
+        birdY = 200;
+        velocity = 0;
+        points = 0;
+        pipes = [{ x: canvas.width, y: Math.floor(Math.random() * 200) + 50 }];
+        gameOver = false;
+        updatePointsDisplay(); // Update points display
+    }
+
+    // Restart game after game over
+    function restartGame() {
+        resetGame(); // Reset game state
+        document.getElementById("gameOverMenu").style.display = "none"; // Hide game over screen
+        document.getElementById("startMenu").style.display = "block"; // Show start screen again
+        canvas.style.display = "none"; // Hide canvas during restart
+        isGameStarted = false; // Set game start state to false
+    }
+
+    // Draw the game state
+    function draw() {
+        if (gameOver) {
+            document.getElementById("finalPoints").textContent = points;
+            document.getElementById("gameOverMenu").style.display = "block";
+            canvas.style.display = "none"; // Hide canvas when game is over
+            return;
+        }
+
+        // Draw background
+        ctx.fillStyle = "#70c5ce";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        // Draw bird (yellow circle)
+        ctx.beginPath();
+        ctx.arc(birdX, birdY, birdRadius, 0, Math.PI * 2);
+        ctx.fillStyle = "#FFEB3B"; // Yellow
+        ctx.fill();
+
+        // Update bird position
+        birdY += velocity;
+        velocity += gravity;
+
+        // Draw pipes
+        for (let i = 0; i < pipes.length; i++) {
+            let pipe = pipes[i];
+            ctx.fillStyle = "#228B22"; // Green color
+            ctx.fillRect(pipe.x, 0, 50, pipe.y); // Top pipe
+            ctx.fillRect(pipe.x, pipe.y + 150, 50, canvas.height - pipe.y - 150); // Bottom pipe
+
+            pipe.x -= 2; // Move pipes to the left
+
+            // Collision detection
+            if (
+                birdX + birdRadius > pipe.x && birdX - birdRadius < pipe.x + 50 &&
+                (birdY - birdRadius < pipe.y || birdY + birdRadius > pipe.y + 150)
+            ) {
+                gameOver = true;
+            }
+
+            // Points update: when the bird successfully passes a pipe
+            if (pipe.x === birdX) {
+                points++;
+                updatePointsDisplay(); // Update points display
+            }
+        }
+
+        // Add new pipes when the current pipes are off-screen
+        if (pipes[pipes.length - 1].x < canvas.width - 200) {
+            pipes.push({ x: canvas.width, y: Math.floor(Math.random() * 200) + 50 });
+        }
+
+        // Remove pipes that are off-screen
+        if (pipes[0].x < -50) {
+            pipes.shift();
+        }
+
+        requestAnimationFrame(draw);
+    }
+
+    // Update the points display on the screen
+    function updatePointsDisplay() {
+        document.getElementById("pointsDisplay").textContent = "Points: " + points;
+    }
+</script>
+
 </body>
 </html>
