@@ -87,7 +87,7 @@ function draw() {
             gameOver = true;
         }
 
-        // Score update
+        // Score update: when the bird successfully passes a pipe
         if (pipe.x === birdX) {
             score++;
         }
