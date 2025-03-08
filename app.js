@@ -1,60 +1,83 @@
-// Wait for the document to load before running the code
+// Number Guessing Game Logic
 document.addEventListener('DOMContentLoaded', function () {
     const startButton = document.getElementById('startButton');
+    const startPacmanButton = document.getElementById('startPacman');
     const gameArea = document.getElementById('gameArea');
-    const submitGuessButton = document.getElementById('submitGuess');
-    const guessInput = document.getElementById('guessInput');
-    const messageElement = document.getElementById('message');
-    const attemptsElement = document.getElementById('attempts');
+    const pacmanGameArea = document.getElementById('pacmanGameArea');
     const restartButton = document.getElementById('restartGame');
+    const restartPacmanButton = document.getElementById('restartPacmanGame');
     
+    // Number Guessing Game
     let randomNumber, attempts;
-
-    // Start the game when the start button is clicked
     startButton.addEventListener('click', function () {
         startGame();
     });
-
-    // Submit guess and check it
-    submitGuessButton.addEventListener('click', function () {
-        checkGuess();
-    });
-
-    // Restart the game when the restart button is clicked
     restartButton.addEventListener('click', function () {
         startGame();
     });
 
-    // Function to start or restart the game
     function startGame() {
-        randomNumber = Math.floor(Math.random() * 100) + 1; // Generate a random number between 1 and 100
+        randomNumber = Math.floor(Math.random() * 100) + 1;
         attempts = 0;
-        attemptsElement.textContent = attempts;
-        messageElement.textContent = "";
-        guessInput.value = "";
-        gameArea.style.display = 'block'; // Show game area
-        startButton.style.display = 'none'; // Hide start button
-        restartButton.style.display = 'none'; // Hide restart button
+        gameArea.style.display = 'block';
+        pacmanGameArea.style.display = 'none';
+        startButton.style.display = 'none';
+        restartButton.style.display = 'none';
     }
 
-    // Function to check the player's guess
-    function checkGuess() {
-        const guess = parseInt(guessInput.value);
-        if (isNaN(guess) || guess < 1 || guess > 100) {
-            messageElement.textContent = "Please enter a number between 1 and 100.";
-            return;
-        }
+    // Pac-Man Game
+    const pacmanCanvas = document.getElementById('pacmanCanvas');
+    const ctx = pacmanCanvas.getContext('2d');
+    let pacman = { x: 200, y: 200, radius: 20, direction: 0 };
 
-        attempts++;
-        attemptsElement.textContent = attempts;
+    startPacmanButton.addEventListener('click', function () {
+        startPacmanGame();
+    });
 
-        if (guess === randomNumber) {
-            messageElement.textContent = `Congratulations! You guessed the number in ${attempts} attempts!`;
-            restartButton.style.display = 'block'; // Show restart button
-        } else if (guess < randomNumber) {
-            messageElement.textContent = "Too low! Try again.";
-        } else {
-            messageElement.textContent = "Too high! Try again.";
+    restartPacmanButton.addEventListener('click', function () {
+        startPacmanGame();
+    });
+
+    function startPacmanGame() {
+        pacmanGameArea.style.display = 'block';
+        gameArea.style.display = 'none';
+        startPacmanButton.style.display = 'none';
+        restartPacmanButton.style.display = 'none';
+        pacman = { x: 200, y: 200, radius: 20, direction: 0 };
+        drawPacman();
+        document.addEventListener('keydown', movePacman);
+        gameLoop();
+    }
+
+    function drawPacman() {
+        ctx.clearRect(0, 0, pacmanCanvas.width, pacmanCanvas.height);
+        ctx.beginPath();
+        ctx.arc(pacman.x, pacman.y, pacman.radius, pacman.direction * Math.PI / 180, (pacman.direction + 270) * Math.PI / 180);
+        ctx.lineTo(pacman.x, pacman.y);
+        ctx.fillStyle = 'yellow';
+        ctx.fill();
+    }
+
+    function movePacman(event) {
+        const speed = 5;
+        if (event.key === 'ArrowUp') {
+            pacman.y -= speed;
+        } else if (event.key === 'ArrowDown') {
+            pacman.y += speed;
+        } else if (event.key === 'ArrowLeft') {
+            pacman.x -= speed;
+        } else if (event.key === 'ArrowRight') {
+            pacman.x += speed;
         }
+        drawPacman();
+    }
+
+    function gameLoop() {
+        if (pacman.x < 0) pacman.x = pacmanCanvas.width;
+        if (pacman.x > pacmanCanvas.width) pacman.x = 0;
+        if (pacman.y < 0) pacman.y = pacmanCanvas.height;
+        if (pacman.y > pacmanCanvas.height) pacman.y = 0;
+
+        setTimeout(gameLoop, 1000 / 60); // 60 frames per second
     }
 });
