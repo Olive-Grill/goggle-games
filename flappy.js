@@ -20,22 +20,31 @@ function jump(event) {
 
 // Start the game
 document.getElementById("startButton").addEventListener("click", startGame);
+document.getElementById("restartButton").addEventListener("click", restartGame);
 
 function startGame() {
     isGameStarted = true;
     document.getElementById("startMenu").style.display = "none"; // Hide start menu
     canvas.style.display = "block"; // Show canvas
+    document.getElementById("gameOverMenu").style.display = "none"; // Hide game over menu
+    resetGame(); // Reset the game state
     draw(); // Start drawing the game
+}
+
+// Reset game state
+function resetGame() {
+    birdY = 200;
+    velocity = 0;
+    score = 0;
+    pipes = [{ x: canvas.width, y: Math.floor(Math.random() * 200) + 50 }];
+    gameOver = false;
 }
 
 // Draw the game state
 function draw() {
     if (gameOver) {
-        ctx.fillStyle = "black";
-        ctx.font = "30px Arial";
-        ctx.fillText("Game Over", 130, 250);
-        ctx.fillStyle = "white";
-        ctx.fillText("Score: " + score, 160, 300);
+        document.getElementById("finalScore").textContent = score;
+        document.getElementById("gameOverMenu").style.display = "block";
         return;
     }
 
@@ -77,19 +86,3 @@ function draw() {
     }
 
     // Add new pipes when the current pipes are off-screen
-    if (pipes[pipes.length - 1].x < canvas.width - 200) {
-        pipes.push({ x: canvas.width, y: Math.floor(Math.random() * 200) + 50 });
-    }
-
-    // Remove pipes that are off-screen
-    if (pipes[0].x < -50) {
-        pipes.shift();
-    }
-
-    // Draw score
-    ctx.fillStyle = "white";
-    ctx.font = "20px Arial";
-    ctx.fillText("Score: " + score, 20, 30);
-
-    requestAnimationFrame(draw);
-}
