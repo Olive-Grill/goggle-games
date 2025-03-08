@@ -25,8 +25,8 @@ document.getElementById("restartButton").addEventListener("click", restartGame);
 function startGame() {
     isGameStarted = true;
     document.getElementById("startMenu").style.display = "none"; // Hide start menu
-    canvas.style.display = "block"; // Show canvas
     document.getElementById("gameOverMenu").style.display = "none"; // Hide game over menu
+    canvas.style.display = "block"; // Show canvas
     resetGame(); // Reset the game state
     draw(); // Start drawing the game
 }
@@ -45,6 +45,7 @@ function restartGame() {
     resetGame(); // Reset game state
     document.getElementById("gameOverMenu").style.display = "none"; // Hide game over screen
     document.getElementById("startMenu").style.display = "block"; // Show start screen again
+    canvas.style.display = "none"; // Hide canvas during restart
     isGameStarted = false; // Set game start state to false
 }
 
@@ -53,6 +54,7 @@ function draw() {
     if (gameOver) {
         document.getElementById("finalScore").textContent = score;
         document.getElementById("gameOverMenu").style.display = "block";
+        canvas.style.display = "none"; // Hide canvas when game is over
         return;
     }
 
