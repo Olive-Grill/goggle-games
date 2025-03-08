@@ -12,6 +12,7 @@
 
     <!-- Start Button -->
     <button id="startButton">Start Number Guessing Game</button>
+    <button id="startPacman">Start Pac-Man Game</button>
 
     <!-- Game Area (hidden initially) -->
     <div id="gameArea" class="game-area" style="display: none;">
@@ -21,6 +22,12 @@
         <p id="message"></p>
         <p>Attempts: <span id="attempts">0</span></p>
         <button id="restartGame" style="display: none;">Restart Game</button>
+    </div>
+
+    <div id="pacmanGameArea" class="game-area" style="display: none;">
+        <h2>Pac-Man Game</h2>
+        <canvas id="pacmanCanvas" width="400" height="400"></canvas>
+        <button id="restartPacmanGame" style="display: none;">Restart Pac-Man</button>
     </div>
 
     <script src="app.js"></script>
