@@ -11,12 +11,16 @@
     <p>Click the button to start a game!</p>
 
     <!-- Start Button -->
-    <button id="startButton">Start Game</button>
+    <button id="startButton">Start Number Guessing Game</button>
 
     <!-- Game Area (hidden initially) -->
     <div id="gameArea" class="game-area" style="display: none;">
-        <p>Game is starting...</p>
-        <!-- Add actual game content here -->
+        <p>Guess a number between 1 and 100:</p>
+        <input type="number" id="guessInput" placeholder="Enter your guess" />
+        <button id="submitGuess">Submit Guess</button>
+        <p id="message"></p>
+        <p>Attempts: <span id="attempts">0</span></p>
+        <button id="restartGame" style="display: none;">Restart Game</button>
     </div>
 
     <script src="app.js"></script>
