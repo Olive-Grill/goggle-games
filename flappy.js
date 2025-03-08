@@ -40,6 +40,14 @@ function resetGame() {
     gameOver = false;
 }
 
+// Restart game after game over
+function restartGame() {
+    resetGame(); // Reset game state
+    document.getElementById("gameOverMenu").style.display = "none"; // Hide game over screen
+    document.getElementById("startMenu").style.display = "block"; // Show start screen again
+    isGameStarted = false; // Set game start state to false
+}
+
 // Draw the game state
 function draw() {
     if (gameOver) {
