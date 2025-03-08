@@ -71,8 +71,8 @@ async function saveScore() {
 
         const database = new Appwrite.Databases(client);
         await database.createDocument(
-            '[YOUR_DATABASE_ID]', // Database ID
-            '[YOUR_COLLECTION_ID]', // Collection ID
+            '67cc80c7001dc875eca5', // Database ID (your database ID)
+            '67cc80d000300a719aee', // Collection ID (your collection ID)
             'unique()', // Document ID (auto-generated)
             { user_id: userId, score: score }
         );
@@ -90,8 +90,8 @@ async function getScore() {
 
         const database = new Appwrite.Databases(client);
         const result = await database.listDocuments(
-            '[YOUR_DATABASE_ID]', // Database ID
-            '[YOUR_COLLECTION_ID]', // Collection ID
+            '67cc80c7001dc875eca5', // Database ID
+            '67cc80d000300a719aee', // Collection ID
             [Appwrite.Query.equal('user_id', userId)] // Search by user_id
         );
 
