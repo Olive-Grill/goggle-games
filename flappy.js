@@ -1,8 +1,6 @@
 const canvas = document.getElementById("flappyCanvas");
 const ctx = canvas.getContext("2d");
 
-const bird = new Image();
-bird.src = "https://i.imgur.com/Uyemdfk.png"; // Bird sprite
 const bg = new Image();
 bg.src = "https://i.imgur.com/XNqA5Bh.png"; // Background
 const pipeTop = new Image();
@@ -33,7 +31,12 @@ function draw() {
     }
 
     ctx.drawImage(bg, 0, 0, canvas.width, canvas.height);
-    ctx.drawImage(bird, birdX, birdY, 35, 35);
+
+    // Draw bird as a circle
+    ctx.beginPath();
+    ctx.arc(birdX + 15, birdY + 15, 15, 0, Math.PI * 2);
+    ctx.fillStyle = "#FFEB3B"; // Yellow bird
+    ctx.fill();
 
     for (let i = 0; i < pipes.length; i++) {
         let pipe = pipes[i];
@@ -43,9 +46,9 @@ function draw() {
 
         // Collision detection
         if (
-            (birdX + 35 > pipe.x && birdX < pipe.x + 50 &&
-                (birdY < pipe.y + 200 || birdY + 35 > pipe.y + 300)) ||
-            birdY + 35 > canvas.height
+            (birdX + 30 > pipe.x && birdX < pipe.x + 50 &&
+                (birdY < pipe.y + 200 || birdY + 30 > pipe.y + 300)) ||
+            birdY + 30 > canvas.height
         ) {
             gameOver = true;
         }
